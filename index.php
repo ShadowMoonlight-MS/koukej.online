@@ -6,7 +6,15 @@ $isLoggedIn = isset($_SESSION['user_email']);
 $userEmail = $isLoggedIn ? $_SESSION['user_email'] : '';
 if (!$isLoggedIn && isset($_COOKIE['login_token'])) {
     $token = $_COOKIE['login_token'];
-    // Connect to the database
+    
+/* v login token je include 'CRONS/config.php';:
+<?php
+$servername = "";
+$username = "";
+$password = "";
+$dbname = "";
+?>
+*/
     include 'CRONS/config.php';
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
@@ -133,7 +141,7 @@ if ($isLoggedIn) {
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">Koukej Online</h1>
         <p class="lead text-body-secondary">Vyhledávač videí po internetu</p>
-        <p class="lead text-body-secondary">Web je funkční[<?php echo date('d.m.Y'); ?>], Verze 1.7.5<a href="https://koukej.online/novinky.html">novinky</a></p>
+        <p class="lead text-body-secondary">Web je funkční[<?php echo date('d.m.Y'); ?>], Verze 1.7.5<a href="https://koukej.online/novinky.html">novinky</a>a <a href="https://github.com/ShadowMoonlight-MS/koukej.online">Git</a></p>
         <p class="lead text-body-secondary">Tato stránka je primárně vytvořena pro edukační účely, hrátky s Javascriptem, PHPkem a SQLkem a používá cookies(používáním stránky dáváte souhlas k ukládání cookies, v novinkách píšu co ukládám)</p>
 
         
@@ -178,10 +186,6 @@ if ($isLoggedIn) {
 <?php if (!$isLoggedIn): ?>
           <a style="background-color: #7289da;" class="btn btn-secondary my-2" data-bs-toggle="modal" data-bs-target="#loginModal">Přihlásit se/Registrovat se</a>
           <?php endif; ?>
-        </p>
-        <p>
-          
-          <a href="https://t.me/+O8hnfFVNS9IzMjk0" style="background-color: #0077ff;" class="btn btn-secondary my-2">Skupina/fórum</a>
         </p>
       </div>
       <p class="lead text-body-secondary">Seriály hledejte pod českým názvem (Aktualizace probíhá v pátek a úterý)</p>
