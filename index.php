@@ -139,7 +139,7 @@ if ($isLoggedIn) {
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Koukej Online[pracuji na lepší verzi]</h1>
+        <h1 class="fw-light">Koukej Online</h1>
         <p class="lead text-body-secondary">Vyhledávač videí po internetu</p>
         <p class="lead text-body-secondary">Web je funkční[<?php echo date('d.m.Y'); ?>], Verze 1.7.8 <a href="https://koukej.online/novinky.html">novinky</a> a <a href="https://github.com/ShadowMoonlight-MS/koukej.online"> Git</a></p>
         <p class="lead text-body-secondary">Tato stránka je primárně vytvořena pro edukační účely, hrátky s Javascriptem, PHPkem a SQLkem a používá cookies(používáním stránky dáváte souhlas k ukládání cookies, v novinkách píšu co ukládám)</p>
