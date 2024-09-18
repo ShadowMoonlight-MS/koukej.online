@@ -139,11 +139,11 @@ if ($isLoggedIn) {
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Koukej Online</h1>
+        <h1 class="fw-light">Koukej Online[pracuji na lepší verzi]</h1>
         <p class="lead text-body-secondary">Vyhledávač videí po internetu</p>
-        <p class="lead text-body-secondary">Web je funkční[<?php echo date('d.m.Y'); ?>], Verze 1.7.5<a href="https://koukej.online/novinky.html">novinky</a>a <a href="https://github.com/ShadowMoonlight-MS/koukej.online">Git</a></p>
+        <p class="lead text-body-secondary">Web je funkční[<?php echo date('d.m.Y'); ?>], Verze 1.7.8 <a href="https://koukej.online/novinky.html">novinky</a> a <a href="https://github.com/ShadowMoonlight-MS/koukej.online"> Git</a></p>
         <p class="lead text-body-secondary">Tato stránka je primárně vytvořena pro edukační účely, hrátky s Javascriptem, PHPkem a SQLkem a používá cookies(používáním stránky dáváte souhlas k ukládání cookies, v novinkách píšu co ukládám)</p>
-
+ 
         
         <p class="lead text-body-secondary">Autor:ShadowMoonlight</p>
   
@@ -189,7 +189,23 @@ if ($isLoggedIn) {
         </p>
       </div>
       <p class="lead text-body-secondary">Seriály hledejte pod českým názvem (Aktualizace probíhá v pátek a úterý)</p>
-      <p class="lead text-body-secondary">Filmy hledejte pod anglickým/českým názvem(aktuálně 2016-24!)</p>
+      <p class="lead text-body-secondary">Filmy hledejte pod anglickým/českým názvem(aktuálně 2016-24!) do konce září budou od 2010</p>
+
+      <?php if ($isLoggedIn): ?>
+
+<div class="container mt-4" style="margin-bottom: 1em;">
+    <div class="row">
+        <div class="col-md-12">
+                <ul class="list-group list-group-horizontal">
+                <li class="list-group-item"><strong>Naposledy jste hledali:</strong></li>
+                <?php include 'phpfiles/historie_hledani.php'; ?>
+                </ul>
+            
+        </div>
+    </div>
+</div>
+
+<?php endif; ?>
 
       <form id="searchForm" class="form-inline">
     <div class="input-group">
@@ -335,7 +351,25 @@ document.getElementById('filesearch').addEventListener('keydown', async (event) 
         const normalizedQuery = removeDiacritics(query);
         await searchFiles(normalizedQuery);
         window.scrollBy(0, 600);
+        <?php if ($isLoggedIn): ?>
+          const formData = new FormData();
+        formData.append('email', '<?php echo $userEmail; ?>');  // PHP proměnná z session
+        formData.append('query', normalizedQuery);
+
+        // Odeslání dat na server pomocí fetch API
+        fetch('phpfiles/historie_hledani_zapis.php', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+        .then(result => {
+            console.log('Úspěšně zapsáno do historie:');
+        }).catch(error => {
+            console.error('Chyba při zápisu:', error);
+        });
+        
+        <?php endif; ?>
     }
+    
 });
 
 document.getElementById('najit_button').addEventListener('click', async (event) => {
@@ -344,6 +378,23 @@ document.getElementById('najit_button').addEventListener('click', async (event) 
     const normalizedQuery = removeDiacritics(query);
     await searchFiles(normalizedQuery);
     window.scrollBy(0, 600);
+    <?php if ($isLoggedIn): ?>
+          const formData = new FormData();
+        formData.append('email', '<?php echo $userEmail; ?>');  // PHP proměnná z session
+        formData.append('query', normalizedQuery);
+
+        // Odeslání dat na server pomocí fetch API
+        fetch('phpfiles/historie_hledani_zapis.php', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+        .then(result => {
+            console.log('Úspěšně zapsáno do historie:', result);
+        }).catch(error => {
+            console.error('Chyba při zápisu:', error);
+        });
+        
+        <?php endif; ?>
 });
 
 let typingTimer;
