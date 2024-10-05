@@ -1,4 +1,5 @@
-<?php include 'navstevnost.php'; ?>
+<?php include 'navstevnost.php'; include 'CRONS/config.php'; //db psq, l ?>
+
 <?php
 session_start();
 // Check if the user is already logged in via session
@@ -7,15 +8,8 @@ $userEmail = $isLoggedIn ? $_SESSION['user_email'] : '';
 if (!$isLoggedIn && isset($_COOKIE['login_token'])) {
     $token = $_COOKIE['login_token'];
     
-/* v login token je include 'CRONS/config.php';:
-<?php
-$servername = "";
-$username = "";
-$password = "";
-$dbname = "";
-?>
-*/
-    include 'CRONS/config.php';
+
+
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -61,20 +55,18 @@ if ($isLoggedIn) {
 
 
 <!doctype html>
-<html lang="en" data-bs-theme="auto">
+<html lang="cs">
   <head>
-  
+    
     <script src="https://koukej.online/assets/js/color-modes.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.122.0">
     <title>Koukej online</title>
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album/">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <!--  <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album/"> -->
+    <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"> -->
     <script src="https://koukej.online/assets/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script>  -->
+    
     <link rel="icon" type="image/png" href="https://koukej.online/assets/faviikonka.png">
 
 
@@ -82,18 +74,169 @@ if ($isLoggedIn) {
 
     <link href="https://koukej.online/assets/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://koukej.online/styles.css" rel="stylesheet" type="text/css">
-
-    
-
-    
   </head>
-  <body> 
+  <style>
+    body{
+      margin-top: 1em;
+    }
+  </style>
+
+
+
+
+
+
+
+
+
+
+  <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary" id="navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="https://koukej.online">
+            <img src="favi_icon.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarNav">
+            <ul class="navbar-nav w-100">
+               <li class="nav-item d-flex align-items-center">
+               <a href="https://koukej.online/novinky.html" class="lead" style="color: #949494; text-decoration: none;">Verze: 1.8</a>     
+                </li>    
+               <li class="nav-item d-flex align-items-center ms-2">
+                <a href="https://github.com/ShadowMoonlight-MS/koukej.online">
+                    <img src="github.png" alt="GitHub" width="25" height="25">
+                     
+                </a>
+                </li>
+                <?php if (!$isLoggedIn): ?>
+
+                <li class="nav-item ms-auto">
+          <a style="background-color: #7289da;" class="btn btn-secondary my-2" data-bs-toggle="modal" data-bs-target="#loginModal">Přihlásit se/Registrovat se</a>
+                </li>
+                <?php endif; ?>
+                <?php if ($isLoggedIn): ?>
+
+                <div class="d-flex ms-auto">
+                <li class="nav-item me-2">
+                <button class="btn btn-primary my-2">Premium končí za: <?php echo htmlspecialchars($opravneni);?> dní</button>
+                </li>
+                <li class="nav-item me-2">
+                <a href="#" class="btn btn-info my-2" data-bs-toggle="modal" data-bs-target="#premiumModal">❤️ koupit(prodloužit) premium (39,-/měsíc) ❤️</a>
+                </li>
+
+
+
+
+
+               
+                  
+                  <li class="nav-item me-2">
+                  <a class="btn btn-secondary my-2"><?php echo htmlspecialchars($userEmail); ?></a>
+                  </li>
+                  <li class="nav-item">
+                      <form action="logout.php" method="post" style="display:inline;">
     
-  
+                       <button type="submit" class="btn btn-danger my-2">Odhlásit se</button>
+                      </form> 
+                    </li>
+                  </div>
+                  <?php endif; ?>
 
 
 
-    <!-- Ikonky-->
+
+                  
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Offcanvas nav for mobile --><!--
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+-->
+<div class="nav-item ms-auto offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasRightLabel">Koukej Online</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+  <?php if (!$isLoggedIn): ?>
+    <a style="background-color: #7289da;" class="btn btn-secondary my-2" data-bs-toggle="modal" data-bs-target="#loginModal">Přihlásit se/Registrovat se</a>
+  <?php endif; ?>
+
+  <?php if ($isLoggedIn): ?>
+
+                  <div>
+                  <button class="btn btn-primary my-2">Premium končí za: <?php echo htmlspecialchars($opravneni);?> dní</button>
+
+                  </div>
+                  <div>
+                  <a href="#" class="btn btn-info my-2" data-bs-toggle="modal" data-bs-target="#premiumModal">❤️ koupit(prodloužit) premium (39,-/měsíc) ❤️</a>
+
+                  </div>
+
+
+
+                  <div>
+                  <a class="btn btn-secondary my-3"><?php echo htmlspecialchars($userEmail); ?></a>
+                  </div>
+                  <div>
+
+                      <form action="logout.php" method="post" style="display:inline;">
+    
+                       <button type="submit" class="btn btn-danger my-1">Odhlásit se</button>
+                      </form> 
+                    </div>
+
+
+
+  <?php endif; ?>
+
+
+
+  </div>
+</div>
+
+
+<script>
+  /*
+
+    // Přepínání tříd pro dark/light mód na navbaru
+    const themeToggleBtns = document.querySelectorAll('[data-bs-theme-value]');
+    const navbar = document.getElementById('navbar');
+
+    function applyNavbarTheme(theme) {
+    if (theme === 'dark') {
+        navbar.classList.remove('navbar-light', 'bg-light', 'text-dark');
+        navbar.classList.add('navbar-dark', 'bg-dark', 'text-light');
+    } else {
+        navbar.classList.remove('navbar-dark', 'bg-dark', 'text-light');
+        navbar.classList.add('navbar-light', 'bg-light', 'text-dark');
+    }
+}
+
+    themeToggleBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const selectedTheme = btn.getAttribute('data-bs-theme-value');
+            applyNavbarTheme(selectedTheme);
+        });
+    });
+
+    // Při načtení stránky aplikovat uložené nastavení
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        applyNavbarTheme(savedTheme);
+    });
+    */
+</script>
+
+  <body> 
+
+   <!-- Ikonky-->
     
 
     <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
@@ -121,13 +264,6 @@ if ($isLoggedIn) {
             <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
           </button>
         </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
-            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#circle-half"></use></svg>
-            Auto
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
       </ul>
     </div>
 
@@ -139,30 +275,21 @@ if ($isLoggedIn) {
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Koukej Online</h1>
+        <h1 class="fw-light">Koukej online</h1>
         <p class="lead text-body-secondary">Vyhledávač videí po internetu</p>
-        <p class="lead text-body-secondary">Web je funkční[<?php echo date('d.m.Y'); ?>], Verze 1.7.8 <a href="https://koukej.online/novinky.html">novinky</a> a <a href="https://github.com/ShadowMoonlight-MS/koukej.online"> Git</a></p>
-        <p class="lead text-body-secondary">Tato stránka je primárně vytvořena pro edukační účely, hrátky s Javascriptem, PHPkem a SQLkem a používá cookies(používáním stránky dáváte souhlas k ukládání cookies, v novinkách píšu co ukládám)</p>
+        <p class="lead text-body-secondary">Tato stránka byla primárně vytvořena pro edukační účely, hrátky s Javascriptem, PHPkem a SQLkem a používá cookies(používáním stránky dáváte souhlas k ukládání cookies, v novinkách píšu co ukládám)</p>
  
         
-        <p class="lead text-body-secondary">Autor:ShadowMoonlight</p>
+  
   
   
     
         <p>
 <?php if ($isLoggedIn): ?>
-  <p class="lead text-body-primary">Přihlášený uživatel:</p>
-  <a class="btn btn-secondary my-3"><?php echo htmlspecialchars($userEmail); ?></a>
+
 <?php if ($opravneni == 0): ?>
   <button type="submit" id="checkPermissionButton" class="btn btn-warning my-3">Novinka: Chci to zkusit na jeden den zdarma</button>
   <?php endif; ?>
-  <form action="logout.php" method="post" style="display:inline;">
-    
-    <button type="submit" class="btn btn-danger my-3">Odhlásit se</button>
-  </form>
-  
-  <button class="btn btn-primary my-2">Premium končí za: <?php echo htmlspecialchars($opravneni);?> dní (pokud je 0, tak je neaktivní)</button>
-  <a href="#" class="btn btn-info my-2" data-bs-toggle="modal" data-bs-target="#premiumModal">❤️ koupit(prodloužit) premium (39,-/měsíc) ❤️</a>
  
   <script>
     document.getElementById("checkPermissionButton").addEventListener("click", function() {
@@ -183,13 +310,11 @@ if ($isLoggedIn) {
 </p>
 
 
-<?php if (!$isLoggedIn): ?>
-          <a style="background-color: #7289da;" class="btn btn-secondary my-2" data-bs-toggle="modal" data-bs-target="#loginModal">Přihlásit se/Registrovat se</a>
-          <?php endif; ?>
+
         </p>
       </div>
       <p class="lead text-body-secondary">Seriály hledejte pod českým názvem (Aktualizace probíhá v pátek a úterý)</p>
-      <p class="lead text-body-secondary">Filmy hledejte pod anglickým/českým názvem(aktuálně 2016-24!) do konce září budou od 2010</p>
+      <p class="lead text-body-secondary">Filmy hledejte pod anglickým/českým názvem(aktuálně 2010-24!)</p>
 
       <?php if ($isLoggedIn): ?>
 
@@ -237,99 +362,11 @@ if ($isLoggedIn) {
         
     </div>
 </form>
-<div class="col-lg-6 col-md-8 mx-auto">
+  <div class="col-lg-6 col-md-8 mx-auto">
     <button id="najit_button" class="btn btn-primary my-2" type="button">Najít video</button>
+  </div>
+
 </div>
-
-
-
-    
-    </div>
-
-
-    <?php if ($isAdminUser): ?>
-    <input type="file" id="fileInput" multiple style="display:none;">
-    <button id="uploadButton" type="button">Upload File</button>
-<?php endif; ?>
-
-<script>
-document.getElementById('uploadButton').addEventListener('click', (event) => {
-    event.preventDefault();
-    document.getElementById('fileInput').click();
-});
-
-
-
-document.getElementById('fileInput').addEventListener('change', async (event) => {
-    const files = event.target.files;
-    console.log('Files selected:', files);
-    
-    if (files.length > 0) {
-        for (const file of files) {
-            console.log('Processing file:', file.name);
-            
-            if (file.type.startsWith('video/') || file.name.endsWith('.mov')) {
-                const video = document.createElement('video');
-                video.preload = 'metadata';
-                video.src = URL.createObjectURL(file);
-
-                video.onloadedmetadata = async () => {
-                    URL.revokeObjectURL(video.src);
-                    const durationInSeconds = video.duration;
-                    const minutes = Math.floor(durationInSeconds / 60);
-                    const seconds = Math.floor(durationInSeconds % 60);
-                    const duration = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-
-                    console.log('Video duration:', duration);
-
-                    const formData = new FormData();
-                    formData.append('file', file, file.name);
-
-                    try {
-                        const response = await fetch('https://up.hydrax.net/9fb84d1976e10e82aaaf0709e4a49348', {
-                            method: 'POST',
-                            body: formData
-                        });
-
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-
-                        const body = await response.json();
-                        console.log('Upload response:', body);
-
-                        const slugId = body.slug;
-                        let fileName = file.name;
-                        fileName = fileName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[\u0100-\u017F]/g, '');
-
-                        const insertResponse = await fetch('databaze.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ slugId: slugId, fileName: fileName, cas: duration })
-                        });
-
-                        if (!insertResponse.ok) {
-                            throw new Error(`HTTP error! status: ${insertResponse.status}`);
-                        }
-
-                        const insertResult = await insertResponse.json();
-                        console.log('Database insert result:', insertResult);
-
-                    } catch (error) {
-                        console.error('Error uploading file:', error);
-                    }
-                };
-            } else {
-                console.error('The file is not a video:', file.name);
-            }
-        }
-    }
-});
-</script>
-
-
 
 
   </section>
