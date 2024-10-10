@@ -14,7 +14,7 @@
     </div>
 
     <?php
-    include 'CRONS/config.php';
+    include __DIR__ . '/../CRONS/config.php';
     
 
     // Create connection

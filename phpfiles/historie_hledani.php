@@ -1,5 +1,5 @@
 <?php
-include '../CRONS/config.php';
+include __DIR__ . '/../CRONS/config.php';
 
     $userEmail = $userEmail; // nebo jiný způsob, jak získat e-mail uživatele
 

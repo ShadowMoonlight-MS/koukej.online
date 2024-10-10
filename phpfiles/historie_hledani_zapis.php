@@ -1,5 +1,5 @@
 <?php
-include '../CRONS/config.php';
+include __DIR__ . '/../CRONS/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Načteme POST data
