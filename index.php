@@ -176,7 +176,7 @@
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">Koukej online</h1>
-        <p class="lead text-body-secondary">Vyhledávač videí po internetu, <strong>nově kompletně bez reklam</strong></p>
+        <p class="lead text-body-secondary">Vyhledávač videí po internetu <a style="color: #7289da;" class="list-group-item"><strong>nově kompletně bez reklam</strong> </a></p>
         <p class="lead text-body-secondary">Tato stránka byla primárně vytvořena pro edukační účely, hrátky s Javascriptem, PHPkem a SQLkem a používá cookies(používáním stránky dáváte souhlas k ukládání cookies, v novinkách píšu co ukládám)</p>
  
         
