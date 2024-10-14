@@ -48,7 +48,7 @@
         <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarNav">
             <ul class="navbar-nav w-100">
                <li class="nav-item d-flex align-items-center">
-               <a href="https://koukej.online/novinky.html" class="lead" style="color: #949494; text-decoration: none;">Verze: 1.8</a>     
+               <a href="https://koukej.online/novinky.html" class="lead" style="color: #949494; text-decoration: none;">Verze: 1.9</a>     
                 </li>    
                <li class="nav-item d-flex align-items-center ms-2">
                 <a href="https://github.com/ShadowMoonlight-MS/koukej.online">
@@ -176,7 +176,7 @@
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">Koukej online</h1>
-        <p class="lead text-body-secondary">Vyhledávač videí po internetu</p>
+        <p class="lead text-body-secondary">Vyhledávač videí po internetu, <strong>nově kompletně bez reklam</strong></p>
         <p class="lead text-body-secondary">Tato stránka byla primárně vytvořena pro edukační účely, hrátky s Javascriptem, PHPkem a SQLkem a používá cookies(používáním stránky dáváte souhlas k ukládání cookies, v novinkách píšu co ukládám)</p>
  
         
