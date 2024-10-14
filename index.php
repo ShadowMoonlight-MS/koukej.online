@@ -1,53 +1,6 @@
 <?php include 'navstevnost.php'; include 'CRONS/config.php'; //db psq, l ?>
+<?php include 'phpfiles/kontrola_alreadylogin.php' //kontrola seasion zda-li jsme přihlášení ?>
 
-<?php
-session_start();
-// Check if the user is already logged in via session
-$isLoggedIn = isset($_SESSION['user_email']);
-$userEmail = $isLoggedIn ? $_SESSION['user_email'] : '';
-if (!$isLoggedIn && isset($_COOKIE['login_token'])) {
-    $token = $_COOKIE['login_token'];
-    
-
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    // Verify the token
-    $stmt = $conn->prepare("SELECT email FROM Uzivatel_token WHERE token = ? AND expires_at > NOW()");
-    $stmt->bind_param("s", $token);
-    $stmt->execute();
-    $stmt->bind_result($userEmail);
-    if ($stmt->fetch()) {
-        // Token is valid, log in the user
-        $_SESSION['user_email'] = $userEmail;
-        $isLoggedIn = true;
-    }
-
-    $stmt->close();
-    $conn->close();
-}
-$isAdminUser = $userEmail === 'lagycz.lp@gmail.com';
-$opravneni = 0;
-// Fetch user permissions if logged in
-if ($isLoggedIn) {
-    // Fetch permissions from the database
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    $stmt = $conn->prepare("SELECT opravneni FROM Uzivatel WHERE email = ?");
-    $stmt->bind_param("s", $userEmail);
-    $stmt->execute();
-    $stmt->bind_result($opravneni);
-    $stmt->fetch();
-    $stmt->close();
-    $conn->close();
-}
-?>
 <script>
     var isLoggedIn = <?php echo json_encode($isLoggedIn); ?>;
     var opravneni = <?php echo json_encode($opravneni); ?>;
@@ -80,13 +33,6 @@ if ($isLoggedIn) {
       margin-top: 1em;
     }
   </style>
-
-
-
-
-
-
-
 
 
 
@@ -125,12 +71,6 @@ if ($isLoggedIn) {
                 <li class="nav-item me-2">
                 <a href="#" class="btn btn-info my-2" data-bs-toggle="modal" data-bs-target="#premiumModal">❤️ koupit(prodloužit) premium (39,-/měsíc) ❤️</a>
                 </li>
-
-
-
-
-
-               
                   
                   <li class="nav-item me-2">
                   <a class="btn btn-secondary my-2"><?php echo htmlspecialchars($userEmail); ?></a>
@@ -143,13 +83,6 @@ if ($isLoggedIn) {
                     </li>
                   </div>
                   <?php endif; ?>
-
-
-
-
-                  
-
-
             </ul>
         </div>
     </div>
@@ -200,39 +133,6 @@ if ($isLoggedIn) {
 
   </div>
 </div>
-
-
-<script>
-  /*
-
-    // Přepínání tříd pro dark/light mód na navbaru
-    const themeToggleBtns = document.querySelectorAll('[data-bs-theme-value]');
-    const navbar = document.getElementById('navbar');
-
-    function applyNavbarTheme(theme) {
-    if (theme === 'dark') {
-        navbar.classList.remove('navbar-light', 'bg-light', 'text-dark');
-        navbar.classList.add('navbar-dark', 'bg-dark', 'text-light');
-    } else {
-        navbar.classList.remove('navbar-dark', 'bg-dark', 'text-light');
-        navbar.classList.add('navbar-light', 'bg-light', 'text-dark');
-    }
-}
-
-    themeToggleBtns.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            const selectedTheme = btn.getAttribute('data-bs-theme-value');
-            applyNavbarTheme(selectedTheme);
-        });
-    });
-
-    // Při načtení stránky aplikovat uložené nastavení
-    document.addEventListener('DOMContentLoaded', () => {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        applyNavbarTheme(savedTheme);
-    });
-    */
-</script>
 
   <body> 
 
@@ -336,30 +236,7 @@ if ($isLoggedIn) {
     <div class="input-group">
     <input id="filesearch" class="form-control mr-sm-2" type="search" placeholder="Najít video 'např. wednesday' (přes 31 000 videí [90% obsahu v 1080p] vše s CZ dab)" aria-label="Search" list="suggestions">
     <datalist id="suggestions"></datalist>
-    <script>
-    document.getElementById('filesearch').addEventListener('input', function (e) {
-    const diacriticsMap = {
-        'á': 'a', 'č': 'c', 'ď': 'd', 'é': 'e', 'ě': 'e', 'í': 'i', 'ň': 'n',
-        'ó': 'o', 'ř': 'r', 'š': 's', 'ť': 't', 'ú': 'u', 'ů': 'u', 'ý': 'y',
-        'ž': 'z', 'ä': 'a', 'ö': 'o', 'ü': 'u', 'ë': 'e', 'ï': 'i', 'ÿ': 'y',
-        'Á': 'A', 'Č': 'C', 'Ď': 'D', 'É': 'E', 'Ě': 'E', 'Í': 'I', 'Ň': 'N',
-        'Ó': 'O', 'Ř': 'R', 'Š': 'S', 'Ť': 'T', 'Ú': 'U', 'Ů': 'U', 'Ý': 'Y',
-        'Ž': 'Z', 'Ä': 'A', 'Ö': 'O', 'Ü': 'U'
-    };
-
-    let inputValue = e.target.value;
-    let newValue = '';
-
-    for (let i = 0; i < inputValue.length; i++) {
-        let char = inputValue[i];
-        newValue += diacriticsMap[char] || char;
-    }
-
-    e.target.value = newValue;
-});
-</script>
-    
-        
+    <script src="jsfiles/datalist_diakritika.js"></script>
     </div>
 </form>
   <div class="col-lg-6 col-md-8 mx-auto">
